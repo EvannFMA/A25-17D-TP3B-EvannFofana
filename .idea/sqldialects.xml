@@ -6,6 +6,8 @@
     <file url="file://$PROJECT_DIR$/02_BO_05_objects.sql" dialect="OracleSqlPlus" />
     <file url="file://$PROJECT_DIR$/02_BO_15_gestion_emprunts_pkg.pks" dialect="OracleSqlPlus" />
     <file url="file://$PROJECT_DIR$/02_BO_16_gestion_emprunts_pkg.pkb" dialect="OracleSqlPlus" />
+    <file url="file://$PROJECT_DIR$/02_BO_20_triggers.sql" dialect="OracleSqlPlus" />
+    <file url="file://$PROJECT_DIR$/02_BO_25_data.sql" dialect="OracleSqlPlus" />
     <file url="file://$PROJECT_DIR$/Tests_fonctionnels_TP3B.sql.sql" dialect="OracleSqlPlus" />
   </component>
 </project>

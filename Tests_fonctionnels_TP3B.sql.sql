@@ -1,161 +1,157 @@
 set serveroutput on;
 
-
-/************************************* Fait par ÉTUDIANT 1, à tester par ÉTUDIANT 2 *******************************************/
--- A. TEST FONCTIONNEL POUR est_penalites_impayees_fct
+--****************** CURSEUR | ARCHIVER_ANNEE_FCT ******************
+--Effacer les tables d'archives
 DECLARE
-    ID_MEMBRE NUMBER;
-    AMENDE_TOTAL NUMBER;
+    CURSOR C_TABLES_ARCHIVES IS
+    SELECT
+        TABLE_NAME
+    FROM
+        USER_TABLES
+    WHERE
+        TABLE_NAME LIKE 'EMPRUNTS_ARCHIVE_%';
 BEGIN
-    -- LIVRES TOUS RETOURNÉS, SANS AMENDE À PAYER
-    DBMS_OUTPUT.PUT_LINE('*** CAS DE TEST no. 1 : LIVRES TOUS RETOURNÉS, SANS AMENDE À PAYER');
-    ID_MEMBRE := 7; -- Membre 7 : Aucune amende à payer
-    AMENDE_TOTAL := est_penalites_impayees_fct(ID_MEMBRE);
-    DBMS_OUTPUT.PUT_LINE('Amende totale pour le membre ' || ID_MEMBRE || ': ' || AMENDE_TOTAL);
+    FOR REC IN C_TABLES_ARCHIVES LOOP
+        EXECUTE IMMEDIATE 'drop table '
+                          || REC.TABLE_NAME;
+        DBMS_OUTPUT.PUT_LINE('Table '
+                             || REC.TABLE_NAME
+                             || ' supprimée.');
+    END LOOP;
+END;
+/
+-- ARCHIVER_ANNEE_FCT
+DECLARE
+    NB_MOIS NUMBER DEFAULT 0;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('*** CAS DE TEST no. 1 : Archiver une année inexistante [2019]');
 
-    -- LIVRES TOUS RETOURNÉS, MAIS AVEC AMENDE À PAYER
-    DBMS_OUTPUT.PUT_LINE('*** CAS DE TEST no. 2 : LIVRES TOUS RETOURNÉS, MAIS AVEC AMENDE À PAYER');
-    ID_MEMBRE := 8; -- Membre 8 : Amende à payer
-    AMENDE_TOTAL := est_penalites_impayees_fct(ID_MEMBRE);
-    DBMS_OUTPUT.PUT_LINE('Amende totale pour le membre ' || ID_MEMBRE || ': ' || AMENDE_TOTAL);
 
-    -- LIVRE PAS TOUS RETOURNÉS, AVEC AMENDE À PAYER
-    DBMS_OUTPUT.PUT_LINE('*** CAS DE TEST no. 3 : LIVRE PAS TOUS RETOURNÉS, AVEC AMENDE À PAYER');
-    ID_MEMBRE := 9; -- Membre 9 : Livre non retourné et amende à payer
-    AMENDE_TOTAL := est_penalites_impayees_fct(ID_MEMBRE);
-    DBMS_OUTPUT.PUT_LINE('Amende totale pour le membre ' || ID_MEMBRE || ': ' || AMENDE_TOTAL);
+    DBMS_OUTPUT.PUT_LINE('NB_MOIS (devrait être ?) : ' || NB_MOIS);
 
-    -- LIVRE PAS TOUS RETOURNÉS, MAIS SANS AMENDE À PAYER
-    DBMS_OUTPUT.PUT_LINE('*** CAS DE TEST no. 4 : LIVRE PAS TOUS RETOURNÉS, MAIS SANS AMENDE À PAYER');
-    ID_MEMBRE := 10; -- Membre 10 : Livre non retourné, mais sans amende
-    AMENDE_TOTAL := est_penalites_impayees_fct(ID_MEMBRE);
-    DBMS_OUTPUT.PUT_LINE('Amende totale pour le membre ' || ID_MEMBRE || ': ' || AMENDE_TOTAL);
+    DBMS_OUTPUT.PUT_LINE('*** CAS DE TEST no. 2 : Archiver année existante [2020]');
+
+
+    DBMS_OUTPUT.PUT_LINE('NB_MOIS (devrait être ?) : ' || NB_MOIS);
+
+    DBMS_OUTPUT.PUT_LINE('*** CAS DE TEST no. 3 : Archiver année existante [2021]');
+
+    DBMS_OUTPUT.PUT_LINE('NB_MOIS (devrait être ?) : ' || NB_MOIS);
 END;
 /
 
--- B. TEST FONCTIONNEL POUR emprunter_livre_prc
-DECLARE
-    ID_MEMBRE NUMBER;
-    ID_LIVRE  NUMBER;
-    VERIF     VARCHAR2(1000); -- Pratique pour afficher les dates lors de transactions
-BEGIN
-    -- EMPRUNT IMPOSSIBLE, CAR AMENDES
-    DBMS_OUTPUT.PUT_LINE ('*** CAS DE TEST no. 1 : EMPRUNT IMPOSSIBLE, CAR AMENDES');
-    ID_MEMBRE := 5; -- Membre avec amendes impayées
-    ID_LIVRE := 15; -- Livre à emprunter
-    emprunter_livre_prc(ID_MEMBRE, ID_LIVRE); -- Appeler la procédure
+--****************** DÉCLENCHEUR | CODIFICATION_MEMBRE_BI_TRG ******************
+-- Se fait automatiquement. Faire un test avec une nouvelle insertion de membre et l'Afficher pour vérifier.
+Prompt ****************** DÉCLENCHEUR | CODIFICATION_MEMBRE_BI_TRG ******************
+Prompt *** CAS DE TEST no. 1 : Devrait avoir un code membre généré automatiquement
 
-    ROLLBACK; -- Annuler les modifications pour revenir aux données d'origine
+-- Insérer une nouvelle ligne avec vos coordonnées
+-- ...
 
-    -- LIVRE INEXISTANT
-    DBMS_OUTPUT.PUT_LINE ('*** CAS DE TEST no. 2 : LIVRE INEXISTANT');
-    ID_MEMBRE := 6; -- Membre valide
-    ID_LIVRE := 9999; -- ID de livre inexistant
-    emprunter_livre_prc(ID_MEMBRE, ID_LIVRE);
-
-    ROLLBACK;
-
-    -- LIVRE EXISTANT, MAIS DÉJÀ EMPRUNTÉ
-    DBMS_OUTPUT.PUT_LINE('*** CAS DE TEST no. 3 : LIVRE EXISTANT, MAIS DÉJÀ EMPRUNTÉ');
-    ID_MEMBRE := 7; -- Membre avec emprunt en cours
-    ID_LIVRE := 5; -- Livre déjà emprunté
-    emprunter_livre_prc(ID_MEMBRE, ID_LIVRE);
-
-    ROLLBACK;
-
-    -- CAS DE TEST no. 4 : ON PEUT EMPRUNTER LE LIVRE
-    DBMS_OUTPUT.PUT_LINE('*** CAS DE TEST no. 4 : ON PEUT EMPRUNTER LE LIVRE');
-    ID_MEMBRE := 8; -- Membre sans emprunts en cours
-    ID_LIVRE := 10; -- Livre disponible
-    emprunter_livre_prc(ID_MEMBRE, ID_LIVRE);
-
-    ROLLBACK;
-END;
+SELECT * FROM MEMBRES WHERE ID = (SELECT MAX(ID) FROM MEMBRES);
+ROLLBACK;
 /
 
--- C. TEST FONCTIONNEL POUR est_disponible_fct
-DECLARE
-    ID_LIVRE     NUMBER;
-    RETOUR_PREVU DATE;
-BEGIN
-    -- LIVRE DISPONIBLE POUR EMPRUNT
-    DBMS_OUTPUT.PUT_LINE('*** CAS DE TEST no. 1 : LIVRE DISPONIBLE POUR EMPRUNT');
-    ID_LIVRE := 3; -- Livre disponible
-    RETOUR_PREVU := est_disponible_fct(ID_LIVRE); -- Appeler la fonction
-    DBMS_OUTPUT.PUT_LINE('Date de retour prévue pour le livre ' || ID_LIVRE || ': ' || RETOUR_PREVU);
+--****************** DÉCLENCHEUR | SUPPRESSION_MEMBRE_BD_TRG ******************
+--Membre sans emprunt = supprimé
+Prompt ****************** DÉCLENCHEUR | SUPPRESSION_MEMBRE_BD_TRG ******************
+Prompt *** CAS DE TEST no. 1 : Membre sans emprunt, devrait être supprimé
 
-    -- LIVRE DÉJÀ EMPRUNTÉ
-    DBMS_OUTPUT.PUT_LINE('*** CAS DE TEST no. 2 : LIVRE DÉJÀ EMPRUNTÉ');
-    ID_LIVRE := 2; -- Livre déjà emprunté
-    RETOUR_PREVU := est_disponible_fct(ID_LIVRE);
-    DBMS_OUTPUT.PUT_LINE('Date de retour prévue pour le livre ' || ID_LIVRE || ': ' || RETOUR_PREVU);
-END;
+-- Faire une suppression
+
+ROLLBACK;
+
+-- Afficher le membre supprimé après ROLLBACK
+
 /
 
-/************************************* Fait par ÉTUDIANT 2, à tester par ÉTUDIANT 1 *******************************************/
---D. TEST FONCTIONNEL POUR retourner_livre_prc
-DECLARE
-    ID_MEMBRE NUMBER;
-    ID_LIVRE  NUMBER;
-    VERIF     VARCHAR2(1000);
-BEGIN
- 
-    -- RETOUR SANS AMENDES À PAYER
-    DBMS_OUTPUT.PUT_LINE('*** CAS DE TEST no. 1 : RETOUR SANS AMENDES À PAYER');
-    ID_MEMBRE := 6; -- Membre 6 : Aucune amende à payer
-    ID_LIVRE := 18; -- Livre 18 : Livre à retourner
+--Membre avec emprunt, mais date de retour respectée, alors EMPRUNT du membre supprimé + MEMBRE supprimé
+Prompt *** CAS DE TEST no. 2 : Membre avec emprunt, mais date de retour respectée, alors EMPRUNT du membre supprimé + MEMBRE supprimé
 
-    ROLLBACK; -- Pour annuler les modifications de la transaction (retrouver les données d'origine)
+-- Faire une suppression
 
+ROLLBACK;
+-- Afficher le membre et l'emprunt supprimé après ROLLBACK
 
-
-    -- RETOUR AVEC AMENDES À PAYER
-    DBMS_OUTPUT.PUT_LINE('*** CAS DE TEST no. 2 : RETOUR AVEC AMENDES À PAYER');
-
-
-    rollback;
-END;
 /
 
---E. TEST FONCTIONNEL POUR rechercher_livre_fct
-DECLARE
-    ID_LIVRE     NUMBER;
-    REC_INFO_LIVRE BO.GESTION_EMPRUNTS_PKG.T_INFO_LIVRE;
-BEGIN
- 
-    -- LIVRE EXISTANT
-    DBMS_OUTPUT.PUT_LINE('*** CAS DE TEST no. 1 : LIVRE EXISTANT');
+--Membre avec emprunt, mais date de retour non respectée, alors MEMBRE non supprimé
+Prompt *** CAS DE TEST no. 3 : Membre avec emprunt, mais date de retour non respectée, alors MEMBRE non supprimé (ERREUR)
 
+-- Faire une suppression
 
- 
+DBMS_OUTPUT.PUT_LINE('Membre X non supprimé, car il a des livres non retournés.');
+ROLLBACK;
+/
 
-    -- LIVRE INEXISTANT
-    DBMS_OUTPUT.PUT_LINE('*** CAS DE TEST no. 2 : LIVRE INEXISTANT');
+--****************** DÉCLENCHEUR | SUIVI_EMPRUNT_BI_BU_TRG ******************
+--MEMBRE : no?
+Prompt ****************** DÉCLENCHEUR | SUIVI_EMPRUNT_BI_BU_TRG ******************
+Prompt *** CAS DE TEST no. 1 : Insertion d''un emprunt, alors I-#18
+Prompt Nb emprunts jusqu''à maintenant
+select count(*) from EMPRUNTS;
+Prompt on insère un emprunt
 
+--Insérer une emprunt ici
 
-END;
+select * from EMPRUNTS; --Vérifier le code de suivi
+rollback;
+/
+
+Prompt *** CAS DE TEST no. 2 : Mise à jour d''une date de retour NULL, alors R+Numéro de téléphone du membre
+select * from EMPRUNTS;
+
+--Faire un UPDATE
+
+select * from EMPRUNTS; --Vérifier le code de suivi
+rollback;
+/
+
+Prompt *** CAS DE TEST no. 3 : Mise à jour d''une date de retour, NON NULL alors aucun CODE_SUIVI avec téléphone
+select * from EMPRUNTS;
+
+--Faire un UPDATE
+
+Prompt CODE_SUIVI doit être resté à I-#0
+select * from EMPRUNTS; --Vérifier le code de suivi
+rollback;
+/
+
+Prompt *** CAS DE TEST no. 4 : Mise à jour d''une date d''emprunt, Pas de changement, car c''est pas la date de RETOUR
+select * from EMPRUNTS;
+
+--Faire un UPDATE
+
+Prompt CODE_SUIVI doit être resté à I-#0
+select * from EMPRUNTS;
+rollback;
 /
 
 
-
-
---F.  TEST FONCTIONNEL POUR archiver_prc
-DECLARE
-    VERIF VARCHAR2(1000);
-BEGIN
- 
-    -- Création EMPRUNTS_ARCHIVE_202012 (valeurs par défaut)
-    DBMS_OUTPUT.PUT_LINE('*** CAS DE TEST no. 1 : Création de la table EMPRUNTS_ARCHIVE_202012 (valeurs par défaut)');
-
-    
- 
-    -- Création EMPRUNTS_ARCHIVE_202104
-    DBMS_OUTPUT.PUT_LINE('*** CAS DE TEST no. 2 : Création de la table EMPRUNTS_ARCHIVE_202104 (Avril 2024)');
-
-
-
-
-    --drop table EMPRUNTS_ARCHIVE_202012;
-    --drop table EMPRUNTS_ARCHIVE_202104;
-END;
+--****************** RÔLES et permissions ******************
+-- Observer les rôles et permissions (se connecter à BO)
+Prompt Il faut se connecter à BO pour vérifier les rôles et permissions suivantes :
+SELECT * FROM dba_roles where ROLE LIKE 'ROLE_%';
+SELECT * FROM dba_role_privs WHERE grantee = 'ROLE_SYSTEME';
+SELECT * FROM dba_role_privs WHERE grantee = 'ROLE_BIBLIOTHECAIRE';
+SELECT * FROM dba_role_privs WHERE grantee = 'ROLE_MEMBRE';
+SELECT * FROM dba_tab_privs where GRANTEE LIKE 'ROLE_%' order by grantee, TABLE_NAME;
 /
+
+Prompt Il faut se connecter à MEMBRE01 pour tester ceci, ensuite refaire pour EMPLOYE01 :
+--tester la sélection ou suppression de livres pour
+--(se connecter à MEMBRE01 et ensuite à EMPLOYE01)
+SELECT * FROM BO.LIVRES;
+SELECT * FROM BO.EMPRUNTS;
+/
+DELETE FROM BO.EMPRUNTS;
+DELETE FROM BO.LIVRES;
+DELETE FROM BO.SECTIONS;
+DELETE FROM BO.GENRES;
+DELETE FROM BO.AUTEURS;
+DELETE FROM BO.MEMBRES;
+ROLLBACK;
+/
+
+PROMPT n''oubliez pas aussi de consulter le dossier OTHER USERS de l''utilisateur MEMBRE01, par exemple pour voir ce qu''il peut voir de BO
+-- Vérifier aussi le dossier OTHER USERS -> BO
