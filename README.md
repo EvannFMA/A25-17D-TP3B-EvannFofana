@@ -36,4 +36,5 @@ https://github.com/EvannFMA/A25-17D-TP3B-EvannFofana
 Faire un git clone <https://github.com/EvannFMA/A25-17D-TP3B-EvannFofana.git>
 2. Lancer le script 01_SYS avec sys
 3. Lancer les scripts 02_BO avec bo (Est créé à l'étape 2)
-4. Lancer les tests fonctionnels avec bo (Les tests commencent avec bo pour les archives et ensuite ALTER en employe01 pour ensuite ALTER en bo encore)
+4. Lancer le fichier de transactions avec bo
+5. Lancer les tests fonctionnels avec bo (Les tests commencent avec bo pour les archives et ensuite ALTER en employe01 pour ensuite ALTER en bo encore)
