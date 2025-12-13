@@ -1,4 +1,5 @@
 -- Tests_fonctionnels_TP3B.sql
+-- Pour que les 'dbms_output.put_line' s'affichent en SQL*PLUS
 set serveroutput on;
 
 --****************** CURSEUR | ARCHIVER_ANNEE_FCT ******************

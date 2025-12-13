@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="DataSourcePerFileMappings">
-    <file url="file://$PROJECT_DIR$/01_SYS_00_users.sql" value="3b1c80f5-98a6-4b52-968f-a0db174e599d" />
-    <file url="file://$PROJECT_DIR$/Tests_fonctionnels_TP3B.sql" value="b2359ee3-87dd-455e-9f57-f61bb47398a7" />
-  </component>
-</project>

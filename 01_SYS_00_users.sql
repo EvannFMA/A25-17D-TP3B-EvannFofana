@@ -9,12 +9,12 @@ DECLARE
     code_erreur    NUMBER;
     message_erreur VARCHAR2(255);
 BEGIN
-    FOR user_rec IN (SELECT username FROM dba_users WHERE username IN ('BO', 'EMPLOYE01', 'MEMBRE01')) LOOP
-        EXECUTE IMMEDIATE 'DROP USER ' || user_rec.username || ' CASCADE';
+    FOR rec_user IN (SELECT username FROM dba_users WHERE username IN ('BO', 'EMPLOYE01', 'MEMBRE01')) LOOP
+        EXECUTE IMMEDIATE 'DROP USER ' || rec_user.username || ' CASCADE';
     END LOOP;
 
-    FOR role_rec IN (SELECT role FROM dba_roles WHERE role IN ('ROLE_SYSTEME', 'ROLE_BIBLIOTHECAIRE', 'ROLE_MEMBRE')) LOOP
-        EXECUTE IMMEDIATE 'DROP ROLE ' || role_rec.role;
+    FOR rec_role IN (SELECT role FROM dba_roles WHERE role IN ('ROLE_SYSTEME', 'ROLE_BIBLIOTHECAIRE', 'ROLE_MEMBRE')) LOOP
+        EXECUTE IMMEDIATE 'DROP ROLE ' || rec_role.role;
     END LOOP;
 END;
 /

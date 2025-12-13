@@ -5,13 +5,14 @@ CREATE OR REPLACE TRIGGER bo.MEMBRE_BI_TRG
 BEFORE INSERT ON bo.MEMBRES
 FOR EACH ROW
 DECLARE
-    v_code_membre VARCHAR2(12);
+    code_membre VARCHAR2(12);
 BEGIN
+    -- Dual est une table bidon qui permet de lancer le SELECT sans FROM (Sinon erreur)
     SELECT 'BOQC' || LPAD(bo.code_membre_seq.NEXTVAL, 8, '0')
-    INTO v_code_membre
+    INTO code_membre
     FROM dual;
 
-    :NEW.CODE := v_code_membre;
+    :NEW.CODE := code_membre;
 END;
 /
 
@@ -20,14 +21,14 @@ CREATE OR REPLACE TRIGGER bo.MEMBRE_BD_TRG
 BEFORE DELETE ON bo.MEMBRES
 FOR EACH ROW
 DECLARE
-    v_non_retournes_count NUMBER;
+    non_retournes NUMBER;
 BEGIN
     SELECT COUNT(*)
-    INTO v_non_retournes_count
+    INTO non_retournes
     FROM bo.EMPRUNTS
     WHERE MEMBRES_ID = :OLD.ID AND DATE_RETOUR IS NULL;
 
-    IF v_non_retournes_count > 0 THEN
+    IF non_retournes > 0 THEN
         RAISE_APPLICATION_ERROR(-20000, 'Impossible de supprimer le membre. Des livres sont toujours en sa possession.');
     ELSE
         DELETE FROM bo.EMPRUNTS
@@ -41,14 +42,14 @@ CREATE OR REPLACE TRIGGER bo.EMPRUNT_BI_BU_TRG
 BEFORE INSERT OR UPDATE ON bo.EMPRUNTS
 FOR EACH ROW
 DECLARE
-    v_emprunts_count NUMBER;
+    emprunts NUMBER;
 BEGIN
     IF INSERTING THEN
         SELECT COUNT(*) + 1
-        INTO v_emprunts_count
+        INTO emprunts
         FROM bo.EMPRUNTS;
 
-        :NEW.code_suivi := 'I-#' || v_emprunts_count;
+        :NEW.code_suivi := 'I-#' || emprunts;
 
     ELSIF UPDATING AND :NEW.DATE_RETOUR IS NULL THEN
         SELECT 'R-' || TELEPHONE

@@ -27,8 +27,9 @@ https://github.com/EvannFMA/A25-17D-TP3B-EvannFofana
 * Gestion des transactions
 
 ## COMMENTAIRES
-- Normalement il devrait y avoir un erreur de suppression d'un membre -
+- Normalement il devrait y avoir un erreur de suppression d'un membre dans les tests fonctionnels -
 - Elle est gardée exprès car c'est marqué de le faire dans l'exercice -
+- S'assurer d'être déconnecté quand on lance 01_SYS_00_users.sql -
 
 ## INSTRUCTIONS
 1.	Cloner le dépôt :
