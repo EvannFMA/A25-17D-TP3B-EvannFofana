@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/../../Exercices/M03-40-25_EX04b OT summit_customers_solution/02_OT_16_gestion_facturation_pkg.pkb" dialect="OracleSqlPlus" />
     <file url="file://$PROJECT_DIR$/01_SYS_00_users.sql" dialect="OracleSqlPlus" />
     <file url="file://$PROJECT_DIR$/02_BO_00_drop.sql" dialect="OracleSqlPlus" />
     <file url="file://$PROJECT_DIR$/02_BO_05_objects.sql" dialect="OracleSqlPlus" />
@@ -8,6 +9,8 @@
     <file url="file://$PROJECT_DIR$/02_BO_16_gestion_emprunts_pkg.pkb" dialect="OracleSqlPlus" />
     <file url="file://$PROJECT_DIR$/02_BO_20_triggers.sql" dialect="OracleSqlPlus" />
     <file url="file://$PROJECT_DIR$/02_BO_25_data.sql" dialect="OracleSqlPlus" />
-    <file url="file://$PROJECT_DIR$/Tests_fonctionnels_TP3B.sql.sql" dialect="OracleSqlPlus" />
+    <file url="file://$PROJECT_DIR$/02_BO_30_securite.sql" dialect="OracleSqlPlus" />
+    <file url="file://$PROJECT_DIR$/Tests_fonctionnels_TP3B.sql" dialect="OracleSqlPlus" />
+    <file url="file://$PROJECT_DIR$/Transactions.sql" dialect="OracleSqlPlus" />
   </component>
 </project>

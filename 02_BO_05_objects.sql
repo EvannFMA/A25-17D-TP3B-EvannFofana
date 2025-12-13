@@ -1,3 +1,6 @@
+-- 02_BO_05_objects.sql
+-- Fichier objects du TP2 modifié un peu
+
 /*********** *SÉQUENCES *****************/
 CREATE SEQUENCE bo.code_membre_seq
 START WITH 5
@@ -224,5 +227,4 @@ ALTER TABLE bo.EMPRUNTS
 ALTER TABLE bo.EMPRUNTS
     ADD CONSTRAINT EMPRUNTS_FK2 FOREIGN KEY (membres_id)
         REFERENCES bo.MEMBRES(ID)
-        ON DELETE CASCADE
         ENABLE;

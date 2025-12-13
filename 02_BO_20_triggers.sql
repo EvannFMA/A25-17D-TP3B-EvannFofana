@@ -1,4 +1,7 @@
-CREATE OR REPLACE TRIGGER bo.trg_membres_before_insert
+-- 02_BO_20_triggers.sql
+
+-- Déclencheur qui s'active avant l'insertion d'un membre
+CREATE OR REPLACE TRIGGER bo.MEMBRE_BI_TRG
 BEFORE INSERT ON bo.MEMBRES
 FOR EACH ROW
 DECLARE
@@ -12,7 +15,8 @@ BEGIN
 END;
 /
 
-CREATE OR REPLACE TRIGGER bo.trg_membres_before_delete
+-- Déclencheur qui s'active avant la suppression d'un membre
+CREATE OR REPLACE TRIGGER bo.MEMBRE_BD_TRG
 BEFORE DELETE ON bo.MEMBRES
 FOR EACH ROW
 DECLARE
@@ -32,7 +36,8 @@ BEGIN
 END;
 /
 
-CREATE OR REPLACE TRIGGER bo.trg_emprunts_before_insert_update
+-- Déclencheur qui s'active avant l'insertion et avant la mise a jour d'un emprunt
+CREATE OR REPLACE TRIGGER bo.EMPRUNT_BI_BU_TRG
 BEFORE INSERT OR UPDATE ON bo.EMPRUNTS
 FOR EACH ROW
 DECLARE

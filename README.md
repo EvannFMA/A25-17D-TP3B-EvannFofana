@@ -19,14 +19,20 @@ https://github.com/EvannFMA/A25-17D-TP3B-EvannFofana
 
  
 ## TÂCHES
-* …
+* Création et gestion des curseurs
+* Création et gestion des déclencheurs
+* Création et gestion des rôles et des privilèges
+* Completion du package
+* Complétion des tests fonctionnels
+* Gestion des transactions
 
 ## COMMENTAIRES
---
+- Normalement il devrait y avoir un erreur de suppression d'un membre -
+- Elle est gardée exprès car c'est marqué de le faire dans l'exercice -
 
 ## INSTRUCTIONS
 1.	Cloner le dépôt :
 Faire un git clone <https://github.com/EvannFMA/A25-17D-TP3B-EvannFofana.git>
 2. Lancer le script 01_SYS avec sys
-3. Lancer les scripts 02_BO avec BO (Est créé à l'étape 2)
-4. Lancer les tests fonctionnels avec TP3A_2040791 (Est aussi créé à l'étape 2)
+3. Lancer les scripts 02_BO avec bo (Est créé à l'étape 2)
+4. Lancer les tests fonctionnels avec bo (Les tests commencent avec bo pour les archives et ensuite ALTER en employe01 pour ensuite ALTER en bo encore)

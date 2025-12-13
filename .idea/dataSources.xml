@@ -9,7 +9,7 @@
       <jdbc-url>jdbc:oracle:thin:@//localhost:1521/FREEPDB1</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="BO@localhost" uuid="b2359ee3-87dd-455e-9f57-f61bb47398a7">
+    <data-source source="LOCAL" name="bo@localhost" uuid="b2359ee3-87dd-455e-9f57-f61bb47398a7">
       <driver-ref>oracle.19</driver-ref>
       <synchronize>true</synchronize>
       <auto-commit>false</auto-commit>
@@ -17,7 +17,15 @@
       <jdbc-url>jdbc:oracle:thin:@//localhost:1521/FREEPDB1</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="TP3A_2040791@localhost" uuid="8d8fc43c-6e24-4913-bd59-560206476b19">
+    <data-source source="LOCAL" name="employe01@localhost" uuid="8d8fc43c-6e24-4913-bd59-560206476b19">
+      <driver-ref>oracle.19</driver-ref>
+      <synchronize>true</synchronize>
+      <auto-commit>false</auto-commit>
+      <jdbc-driver>oracle.jdbc.OracleDriver</jdbc-driver>
+      <jdbc-url>jdbc:oracle:thin:@//localhost:1521/FREEPDB1</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="membre01@localhost" uuid="5b7ae9bb-884e-4da1-85d9-8ab8ba8fa1c3">
       <driver-ref>oracle.19</driver-ref>
       <synchronize>true</synchronize>
       <auto-commit>false</auto-commit>

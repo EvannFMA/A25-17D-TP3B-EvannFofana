@@ -2,7 +2,6 @@
 -- Pour que les 'dbms_output.put_line' s'affichent
 SET SERVEROUTPUT ON;
 
--- Se connecter à l'utilisateur BO
 ALTER SESSION SET CURRENT_SCHEMA = bo;
 
 DECLARE
@@ -57,7 +56,6 @@ BEGIN
         END IF;
     END LOOP;
 
--- Gestion des erreurs
 EXCEPTION
     WHEN OTHERS THEN
         code_erreur := SQLCODE;
